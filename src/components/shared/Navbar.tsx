@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useContext } from "react";
+import { WorkoutContext } from "@/context/WorkoutContext";
 
 const Navbar = () => {
     const pathname = usePathname();
+    const { planWorkouts, savedWorkouts } = useContext(WorkoutContext);
 
     const isWorkoutsActive = pathname === "/workouts" || pathname === "/";
     const isMyPlanActive = pathname === "/my-plan";
@@ -69,7 +72,7 @@ const Navbar = () => {
 
                     <Link
                         href="/"
-                        className="btn btn-ghost px-2 text-xl font-bold tracking-tight text-white hover:bg-transparent"
+                        className="btn btn-ghost px-2 text-3xl font-bold tracking-tight text-white hover:bg-transparent"
                     >
                         FITLOG
                     </Link>
@@ -102,19 +105,31 @@ const Navbar = () => {
                         </li>
                     </ul>
                 </div>
-                <div className="navbar-end gap-5">
+                <div className="navbar-end gap-3 sm:gap-4">
                     <Link
-                        href="/my-plan"
-                        className="text-sm text-[#d1d5db] transition-colors hover:text-white"
+                        href="/my-plan?tab=plan"
+                        className="flex items-center gap-2 text-sm font-medium text-[#d1d5db] transition-colors hover:text-white"
                     >
-                        Plan
+                        <span>Plan</span>
+                        <span
+                            id="navbar-plan-count"
+                            className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#ccff00] px-1.5 text-xs font-black text-black"
+                        >
+                            {planWorkouts.length}
+                        </span>
                     </Link>
 
                     <Link
-                        href="/my-plan"
-                        className="text-sm text-[#d1d5db] transition-colors hover:text-white"
+                        href="/my-plan?tab=saved"
+                        className="flex items-center gap-2 text-sm font-medium text-[#d1d5db] transition-colors hover:text-white"
                     >
-                        Saved
+                        <span>Saved</span>
+                        <span
+                            id="navbar-saved-count"
+                            className="flex h-5 min-w-5 items-center justify-center rounded-full border border-zinc-700 bg-[#161a22] px-1.5 text-xs font-semibold text-zinc-300"
+                        >
+                            {savedWorkouts.length}
+                        </span>
                     </Link>
                 </div>
             </div>
