@@ -19,6 +19,7 @@ const MyPlanContent = () => {
 
     useEffect(() => {
         if (tabQuery === "saved") {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setActiveTab("saved");
         } else if (tabQuery === "plan") {
             setActiveTab("plan");
@@ -40,13 +41,14 @@ const MyPlanContent = () => {
     const sortedPlanWorkouts = sortWorkouts(planWorkouts);
     const sortedSavedWorkouts = sortWorkouts(savedWorkouts);
 
-    // Live Metrics summary
-    const totalExercises = planWorkouts.length;
-    const totalMinutes = planWorkouts.reduce(
+    // Live Metrics summary based on active tab
+    const currentWorkouts = activeTab === "plan" ? planWorkouts : savedWorkouts;
+    const totalExercises = currentWorkouts.length;
+    const totalMinutes = currentWorkouts.reduce(
         (sum, workout) => sum + (workout.duration || 0),
         0,
     );
-    const totalCalories = planWorkouts.reduce(
+    const totalCalories = currentWorkouts.reduce(
         (sum, workout) => sum + (workout.caloriesBurned || 0),
         0,
     );
