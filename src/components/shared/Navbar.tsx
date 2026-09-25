@@ -41,7 +41,7 @@ const Navbar = () => {
                         >
                             <li>
                                 <Link
-                                    href="/workouts"
+                                    href="/"
                                     className={
                                         isWorkoutsActive
                                             ? "bg-[#182b08] font-semibold text-[#ccff00]"
@@ -79,7 +79,7 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal items-center gap-1 px-1">
                         <li>
                             <Link
-                                href="/workouts"
+                                href="/"
                                 className={`rounded-full px-5 py-2 text-sm transition-all ${isWorkoutsActive
                                         ? "bg-[#182b08] font-semibold text-[#ccff00]"
                                         : "text-[#9ca3af] hover:bg-[#15181d] hover:text-white"
