@@ -7,7 +7,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Bounce, toast } from "react-toastify";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IWorkoutContext {
   planWorkouts: IWorkout[];
@@ -76,51 +77,15 @@ export const WorkoutProvider = ({
       );
 
       if (savedPlan) {
-        const parsed = JSON.parse(savedPlan);
-
-        queueMicrotask(() => {
-          setPlanWorkouts(parsed);
-
-          const planEl = document.getElementById(
-            "navbar-plan-count"
-          );
-
-          if (planEl) {
-            planEl.textContent = String(parsed.length);
-          }
-
-          const planMobileEl = document.getElementById(
-            "navbar-plan-count-mobile"
-          );
-
-          if (planMobileEl) {
-            planMobileEl.textContent = String(parsed.length);
-          }
-        });
+        setPlanWorkouts(JSON.parse(savedPlan));
       }
 
       if (savedList) {
-        const parsed = JSON.parse(savedList);
-
-        queueMicrotask(() => {
-          setSavedWorkouts(parsed);
-
-          const savedEl = document.getElementById(
-            "navbar-saved-count"
-          );
-
-          if (savedEl) {
-            savedEl.textContent = String(parsed.length);
-          }
-        });
+        setSavedWorkouts(JSON.parse(savedList));
       }
 
       if (savedCompleted) {
-        const parsed = JSON.parse(savedCompleted);
-
-        queueMicrotask(() => {
-          setCompletedWorkoutIds(parsed);
-        });
+        setCompletedWorkoutIds(JSON.parse(savedCompleted));
       }
     } catch (error) {
       console.error(
@@ -128,9 +93,7 @@ export const WorkoutProvider = ({
         error
       );
     } finally {
-      queueMicrotask(() => {
-        setIsHydrated(true);
-      });
+      setIsHydrated(true);
     }
   }, []);
 
@@ -213,15 +176,15 @@ export const WorkoutProvider = ({
   }, [completedWorkoutIds, isHydrated]);
 
   const isInPlan = (id: number) => {
-    return planWorkouts.some((item) => item.id === id);
+    return planWorkouts.some((item) => Number(item.id) === Number(id));
   };
 
   const isInSaved = (id: number) => {
-    return savedWorkouts.some((item) => item.id === id);
+    return savedWorkouts.some((item) => Number(item.id) === Number(id));
   };
 
   const isCompleted = (id: number) => {
-    return completedWorkoutIds.includes(id);
+    return completedWorkoutIds.some((completedId) => Number(completedId) === Number(id));
   };
 
   const addToPlan = (workout: IWorkout): boolean => {
@@ -269,14 +232,14 @@ export const WorkoutProvider = ({
   };
 
   const removeFromPlan = (id: number) => {
-    const item = planWorkouts.find((workout) => workout.id === id);
+    const item = planWorkouts.find((workout) => Number(workout.id) === Number(id));
 
     setPlanWorkouts((prev) =>
-      prev.filter((workout) => workout.id !== id)
+      prev.filter((workout) => Number(workout.id) !== Number(id))
     );
 
     setCompletedWorkoutIds((prev) =>
-      prev.filter((completedId) => completedId !== id)
+      prev.filter((completedId) => Number(completedId) !== Number(id))
     );
 
     toast.info(
@@ -322,11 +285,11 @@ export const WorkoutProvider = ({
 
   const removeFromSaved = (id: number) => {
     const item = savedWorkouts.find(
-      (workout) => workout.id === id
+      (workout) => Number(workout.id) === Number(id)
     );
 
     setSavedWorkouts((prev) =>
-      prev.filter((workout) => workout.id !== id)
+      prev.filter((workout) => Number(workout.id) !== Number(id))
     );
 
     toast.info(
@@ -341,13 +304,14 @@ export const WorkoutProvider = ({
   };
 
   const toggleComplete = (id: number) => {
+    const numId = Number(id);
     const item = planWorkouts.find(
-      (workout) => workout.id === id
+      (workout) => Number(workout.id) === numId
     );
 
-    if (completedWorkoutIds.includes(id)) {
+    if (completedWorkoutIds.some((completedId) => Number(completedId) === numId)) {
       setCompletedWorkoutIds((prev) =>
-        prev.filter((completedId) => completedId !== id)
+        prev.filter((completedId) => Number(completedId) !== numId)
       );
 
       toast.info(
@@ -360,7 +324,7 @@ export const WorkoutProvider = ({
         }
       );
     } else {
-      setCompletedWorkoutIds((prev) => [...prev, id]);
+      setCompletedWorkoutIds((prev) => [...prev, numId]);
 
       toast.success(
         `Completed "${item?.name || "Workout"}"! Great work 💪`,
@@ -399,6 +363,19 @@ export const WorkoutProvider = ({
   return (
     <WorkoutContext.Provider value={sharedData}>
       {children}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
     </WorkoutContext.Provider>
   );
 };

@@ -81,8 +81,8 @@ const Navbar = () => {
                             <Link
                                 href="/"
                                 className={`rounded-full px-5 py-2 text-sm transition-all ${isWorkoutsActive
-                                        ? "bg-[#182b08] font-semibold text-[#ccff00]"
-                                        : "text-[#9ca3af] hover:bg-[#15181d] hover:text-white"
+                                    ? "bg-[#182b08] font-semibold text-[#ccff00]"
+                                    : "text-[#9ca3af] hover:bg-[#15181d] hover:text-white"
                                     }`}
                             >
                                 Workouts
@@ -93,8 +93,8 @@ const Navbar = () => {
                             <Link
                                 href="/my-plan"
                                 className={`rounded-full px-5 py-2 text-sm transition-all ${isMyPlanActive
-                                        ? "bg-[#182b08] font-semibold text-[#ccff00]"
-                                        : "text-[#9ca3af] hover:bg-[#15181d] hover:text-white"
+                                    ? "bg-[#182b08] font-semibold text-[#ccff00]"
+                                    : "text-[#9ca3af] hover:bg-[#15181d] hover:text-white"
                                     }`}
                             >
                                 My Plan
