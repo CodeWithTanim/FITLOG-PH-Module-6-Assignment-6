@@ -1,8 +1,9 @@
+import Banner from "@/components/homepage/Banner";
 
 export default function Home() {
   return (
     <div>
-      <h2>Hello, FITLOG!</h2>
+      <Banner/>
     </div>
   );
 }
